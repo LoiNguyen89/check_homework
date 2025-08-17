@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Messages</title>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<h2>Conversation</h2>
+
+
+<div th:each="msg : ${messages}">
+    <p>
+        <b th:text="${msg.sender.fullName}"></b> :
+        <span th:text="${msg.content}"></span>
+        <i th:text="${#temporals.format(msg.createdAt, 'dd-MM-yyyy HH:mm')}"></i>
+    </p>
+</div>
+<form th:action="@{'/messages/sender/' + ${senderId} + '/receiver/' + ${receiverId}}"
+      th:object="${newMessage}" method="post">
+    <textarea th:field="*{content}" placeholder="Nhập tin nhắn..." required></textarea>
+    <br/>
+    <button type="submit">Gửi</button>
+</form>
+
+
+</body>
+</html>

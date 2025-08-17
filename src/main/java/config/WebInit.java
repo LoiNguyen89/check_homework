@@ -8,9 +8,9 @@ public class WebInit extends AbstractAnnotationConfigDispatcherServletInitialize
 
 
     private String TMP_URL = System.getProperty("java.io.tmpdir");
-    private long MAX_FILE_SIZE = 50 * 1024 * 1024L;     // 50MB
-    private long MAX_REQUEST_SIZE = 40 * MAX_FILE_SIZE; // 2GB
-    private Integer THRESHOLD_SIZE = 0;                     // ghi thẳng ra file, không lưu bộ nhớ
+    private long MAX_FILE_SIZE = 50 * 1024 * 1024L;
+    private long MAX_REQUEST_SIZE = 40 * MAX_FILE_SIZE;
+    private Integer THRESHOLD_SIZE = 0;
 
     @Override
     protected Class<?>[] getRootConfigClasses() {

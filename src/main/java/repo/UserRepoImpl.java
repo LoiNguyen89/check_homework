@@ -1,39 +1,54 @@
 package repo;
-import model.User;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
+import repo.impl.UserRepo;
 
 @Repository
+@Transactional
 public class UserRepoImpl implements UserRepo {
 
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void save(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(user);
+    private Session getCurrentSession() {
+        return sessionFactory.getCurrentSession();
     }
 
+    @Override
     public User findByEmail(String email) {
-        Session session = sessionFactory.getCurrentSession();
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<User> cq = cb.createQuery(User.class);
-        Root<User> root = cq.from(User.class);
-        cq.where(cb.equal(root.get("email"), email));
-        return session.createQuery(cq).uniqueResult();
+        Query<User> query = getCurrentSession()
+                .createQuery("FROM User WHERE email = :email", User.class);
+        query.setParameter("email", email);
+        return query.uniqueResult();
     }
 
-    public List<User> findAll() {
-        return sessionFactory.getCurrentSession()
-                .createQuery("from User", User.class)
-                .list();
+    @Override
+    public void save(User user) {
+        getCurrentSession().persist(user);
+    }
+
+    @Override
+    public User findByEmailAndPassword(String email, String password) {
+        Query<User> query = getCurrentSession()
+                .createQuery("FROM User WHERE email = :email AND password = :password", User.class);
+        query.setParameter("email", email);
+        query.setParameter("password", password);
+        return query.uniqueResult();
+    }
+
+    @Override
+    public User findById(int id) {
+        return getCurrentSession().get(User.class, id);
+    }
+
+    @Override
+    public void update(User user) {
+        getCurrentSession().merge(user);
     }
 }

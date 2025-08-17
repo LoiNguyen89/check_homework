@@ -7,8 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -22,6 +24,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Properties;
+
 
 @Configuration
 @EnableWebMvc
@@ -55,14 +58,14 @@ public class WebConfig implements WebMvcConfigurer {
         return resolver;
     }
 
-    // ============ Static Resources ============
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/");
     }
 
-    // ============ Database & Hibernate ============
+
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
@@ -97,7 +100,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public Cloudinary cloudinary() {
         return new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", "Loi Nguyen",
+                "cloud_name", "dqqwz9yjr",
                 "api_key", "443134321763158",
                 "api_secret", "J1M5shGIwgobLnjE5UqnZ_kKETc",
                 "secure", true
@@ -108,6 +111,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public MultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
+    }
+
+    @Bean
+    public HibernateTransactionManager transactionManager() {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory());
+        return transactionManager;
     }
 
 
