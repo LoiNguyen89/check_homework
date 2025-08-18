@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Profile</title>
+</head>
+<body>
+<h2>Thông tin cá nhân</h2>
+
+<div th:if="${success}" style="color:green;">[[${success}]]</div>
+<div th:if="${error}" style="color:red;">[[${error}]]</div>
+
+<form th:action="@{/users}" method="post" enctype="multipart/form-data" th:object="${user}">
+  <label>Họ tên:</label>
+  <input type="text" th:field="*{fullName}"/><br/>
+
+  <label>Email:</label>
+  <input type="email" th:field="*{email}"/><br/>
+
+  <label>Avatar hiện tại:</label><br/>
+  <img th:if="${user.avatar}" th:src="${user.avatar}" alt="avatar" width="120"/><br/>
+
+  <label>Cập nhật avatar mới:</label>
+  <input type="file" name="avatarFile"/><br/>
+
+  <button type="submit">Cập nhật</button>
+</form>
+
+
+<a th:href="@{/posts}">Quay lại Home</a>
+</body>
+</html>

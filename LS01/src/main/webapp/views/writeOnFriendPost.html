@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Viết bài lên tường bạn bè</title>
+</head>
+<body>
+<h2>Viết bài lên tường của <span th:text="${friend.fullName}"></span></h2>
+
+<form th:action="@{'/posts/write-on-the-wall/' + ${friend.id}}" method="post" th:object="${post}">
+  <textarea th:field="*{content}" placeholder="Nhập nội dung..." rows="5" cols="50"></textarea>
+  <br/>
+  <button type="submit">Đăng bài</button>
+</form>
+
+<a href="/posts">Quay lại</a>
+</body>
+</html>

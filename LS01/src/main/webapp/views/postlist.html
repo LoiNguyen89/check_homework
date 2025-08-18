@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Danh sách bài viết</title>
+  <link rel="stylesheet" href="/resources/css/style.css">
+</head>
+<body>
+<h2>Danh sách bài viết của bạn</h2>
+
+<div>
+  <a th:href="@{/auth/logout}">Đăng xuất</a>
+</div>
+
+<!-- Nếu chưa có bài viết -->
+<div th:if="${posts.isEmpty()}">
+  <p>Chưa có bài viết nào.</p>
+</div>
+
+<!-- Danh sách bài viết -->
+<div th:each="post : ${posts}" style="border:1px solid #ccc; padding:10px; margin:10px 0;">
+  <p><strong>Người viết:</strong> <span th:text="${post.user.fullName}"></span></p>
+
+  <p><strong>Nội dung:</strong> <span th:text="${post.content}"></span></p>
+
+  <p th:if="${post.image != null}">
+    <img th:src="${post.image}" alt="Hình ảnh" width="200"/>
+  </p>
+
+  <p><em>Ngày tạo: <span th:text="${post.createdDate}"></span></em></p>
+
+  <a th:href="@{/posts/delete/{id}(id=${post.id})}"
+     onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?');">
+    Xóa
+  </a>
+</div>
+
+</body>
+</html>
